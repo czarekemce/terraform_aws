@@ -1,11 +1,15 @@
 import boto3
-from configparser import ConfigParser
-import os
+from datetime import datetime
 
+
+dt = datetime.now()
+formatted_date = dt.strftime("%Y%m%d%H%M%S")
+timestamp = formatted_date[0:8]
+print(timestamp)
 
 
 def verify_resources():
-    bucket_name = 'new-test-bucket'
+    bucket_name = (f"new-test-bucket{timestamp}")
     user_name = "new-test-terraform-user"
     role_name = "new-terraform-role"
     aws_session = boto3.Session(profile_name='default') 
