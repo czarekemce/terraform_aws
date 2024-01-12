@@ -6,8 +6,6 @@ import os
 dt = datetime.now()
 formatted_date = dt.strftime("%Y%m%d%H%M%S")
 timestamp = formatted_date[0:8]
-print(timestamp)
-
 
 def verify_resources():
     bucket_name = (f"new-test-bucket{timestamp}")
