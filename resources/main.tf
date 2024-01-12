@@ -9,6 +9,10 @@ resource "aws_s3_bucket" "combined_name" {
   acl    = "private"
 }
 
+output "combined_name" {
+  value = aws_s3_bucket.combined_name.bucket
+}
+
 resource "aws_iam_user" "new-test-terraform-user" {
   name = "new-test-terraform-user"
 }
@@ -58,8 +62,6 @@ resource "aws_s3_bucket_policy" "combined_name_policy" {
     ]
   })
 }
-
-
 
 resource "aws_iam_user_policy_attachment" "new-test-terraform-user" {
   user       = aws_iam_user.new-test-terraform-user.name
