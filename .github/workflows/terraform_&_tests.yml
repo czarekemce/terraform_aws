@@ -4,15 +4,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  tf_code_check:
-    name: Terraform Validation and Build
+  build:
     runs-on: ubuntu-latest
-
-    if:  ${{ inputs.tfpath }} 
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
-    - name: Checkout tf code in runner environment
-      uses: actions/checkout@v3.5.2
-
     - name: Configure AWS Credentials Action For GitHub Actions
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -25,7 +22,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y python3-pip
         pip3 install -r requirements.txt
-      working-directory: ${{ github.event.inputs.tfpath }}
 
     - name: Setup Terraform CLI
       uses: hashicorp/setup-terraform@v2.0.2
@@ -35,21 +31,18 @@ jobs:
         echo " Running Terraform Init & Validate "
         terraform init
         terraform validate
-      working-directory: ${{ github.event.inputs.tfpath }}
+        
     - name: Terraform plan and apply
       run: |
         terraform plan
         terraform apply -auto-approve
-      working-directory: ${{ github.event.inputs.tfpath }}
 
     - name: Run AWS Tests
       run: |
         echo " Running AWS Tests "
         python3 tests/aws_tests.py
-      working-directory: ${{ github.event.inputs.tfpath }}
 
     - name: Terraform Destroy
       run: |
         echo " Running Terraform Destroy "
         terraform destroy -auto-approve
-      working-directory: ${{ github.event.inputs.tfpath }}
