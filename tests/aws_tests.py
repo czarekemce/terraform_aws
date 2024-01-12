@@ -1,18 +1,24 @@
 import boto3
 from datetime import datetime
+import os
 
 
 dt = datetime.now()
 formatted_date = dt.strftime("%Y%m%d%H%M%S")
 timestamp = formatted_date[0:8]
-print(timestamp)
-
 
 def verify_resources():
     bucket_name = (f"new-test-bucket{timestamp}")
     user_name = "new-test-terraform-user"
     role_name = "new-terraform-role"
-    aws_session = boto3.Session(profile_name='default') 
+
+    aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    aws_secret_access_key = os.environ.get('AWS_SECRET_KEY_ID')
+
+    aws_session = boto3.Session(
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )    
     s3_client = aws_session.client('s3')
 
     try:

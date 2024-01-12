@@ -69,3 +69,4 @@ resource "aws_iam_user_policy_attachment" "new-test-terraform-user" {
 }
 
 data "aws_caller_identity" "current" {}
+
