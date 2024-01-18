@@ -11,4 +11,3 @@ terraform {
     key            = "terraform.tfstate"
   }
 }
-
